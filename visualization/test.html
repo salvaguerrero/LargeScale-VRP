@@ -1,0 +1,21 @@
+<head> </head>
+<body>
+  <form id="myForm">
+    <input type="file" id="csvFile" accept=".csv" />
+    <br />
+    <input type="submit" value="Submit" />
+  </form>
+  <script src="./src/jquery.csv.js"></script>
+  <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+  <script>
+    
+    $.get( "../output.csv", function( CSVdata) {
+     // CSVdata is populated with the file contents...
+     // ...ready to be converted into an Array
+      data = $.csv.toArray(CSVdata);
+      console.log(data)
+  });
+    // document.write(JSON.stringify(data));
+
+  </script>
+</body>

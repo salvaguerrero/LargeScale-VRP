@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<!-- Start Content-->
+	<div class="container-fluid">
+		<!-- start page title -->
+		<div class="row">
+			<div class="col-12">
+				<div class="page-title-box mt-3">
+					<button type="button" class="btn btn-info rounded-pill"  data-bs-toggle="modal" data-bs-target="#add-data-modal" >Add Data</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="page-title-box">
+					<h4 class="page-title">Bins</h4>
+				</div>
+			</div>
+		</div>
+		<ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+			<li class="nav-item">
+				<a href="#home1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+					<i class="mdi mdi-home-variant d-md-none d-block"></i>
+					<span class="d-none d-md-block">List view</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="#profile1" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 active">
+					<i class="mdi mdi-account-circle d-md-none d-block"></i>
+					<span class="d-none d-md-block">Map view</span>
+				</a>
+			</li>
+
+		</ul>
+		
+		<div class="tab-content">
+			<div class="tab-pane" id="home1">
+				<div class="card">
+					<div class="card-body">
+						<table id="alternative-page-datatable-assets-bins" class="table dt-responsive nowrap w-100">
+							<thead>
+								<tr>
+									<th style="width: 20px;">
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck1">
+											<label class="form-check-label" for="customCheck1">&nbsp;</label>
+										</div>
+									</th>
+									<th>Bin ID</th>
+									<th>Addres</th>
+									<th>Type</th>
+									<th>Model</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td>1938A</td>
+									<td>Castellana 200, Madrid</td>
+									<td>Organic Waste</td>
+									<td>1100 L</td>
+									<td><i class="mdi mdi-circle text-success"></i> In Service</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td>1938B</td>
+									<td>Castellana 200, Madrid</td>
+									<td>Crystals</td>
+									<td>1100 L</td>
+									<td><i class="mdi mdi-circle text-warning"></i></i> Full</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td>1938C</td>
+									<td>Castellana 200, Madrid</td>
+									<td>Plastic Waste</td>
+									<td>1100 L</td>
+									<td><i class="mdi mdi-circle text-info"></i>In Depo</td>
+								</tr>
+								
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane show active" id="profile1">
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="card">
+							<div class="card-body">
+								<!-- 21:9 aspect ratio -->
+								<div class="ratio ratio-21x9">
+									<iframe src="https://api.mapbox.com/styles/v1/mapbox/streets-v12.html?title=false&zoomwheel=false&access_token=pk.eyJ1Ijoic2FsdmEtZ3VlcnJlcm8iLCJhIjoiY2w3bjY3anpsMDc5ZjN2czc3dnU1eHJkMiJ9.ThFWKNid4iz_m16p6bJxmw"></iframe>
+								</div>
+							</div> <!-- end card-body-->
+						</div> <!-- end card-->
+					</div> <!-- end col-->
+				</div>
+			</div>
+
+		</div>
+		
+
+
+		<!-- end page title --> 
+		<div class="row">
+			<div class="col-12">
+				<div class="page-title-box">
+					<h4 class="page-title">Trukcs</h4>
+				</div>
+			</div>
+		</div>   
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-body">
+						<table id="alternative-page-datatable-assets-trucks" class="table dt-responsive nowrap w-100">
+							<thead>
+								<tr>
+									<th style="width: 20px;">
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck1">
+											<label class="form-check-label" for="customCheck1">&nbsp;</label>
+										</div>
+									</th>
+									<th>Tuck ID</th>
+									<th>Model</th>
+									<th>Traffic License</th>
+									<th>Age</th>
+									<th>Type</th>
+								</tr>
+							</thead>
+						
+							<tbody>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td>T1</td>
+									<td>Volvo FE</td>
+									<td>123490 ABA</td>
+									<td>12</td>
+									<td>Euro 6</td>													
+								</tr>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td>T2</td>
+									<td>Volvo FE</td>
+									<td>123491 ABA</td>
+									<td>7</td>
+									<td>Euro 3</td>													
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<div class="page-title-box">
+					<h4 class="page-title">Workers</h4>
+				</div>
+			</div>
+		</div>   
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-body">
+						<table id="alternative-page-datatable-assets-workers" class="table table-striped table-centered mb-0">
+							<thead>
+								<tr>
+									<th style="width: 20px;">
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck1">
+											<label class="form-check-label" for="customCheck1">&nbsp;</label>
+										</div>
+									</th>
+									<th>Name</th>
+									<th>Postion</th>
+									<th>Driving Skills</th>
+									<th>Availability</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td class="table-user">
+										<img src="assets/images/users/avatar-2.jpg" alt="table-user" class="me-2 rounded-circle" />
+										Juan
+									</td>
+									<td>Driver</td>
+									<td>CE</td>
+									<td><i class="mdi mdi-circle text-success"></i> Active</td>
+									
+								</tr>
+								<tr>
+									<td>
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="customCheck2">
+											<label class="form-check-label" for="customCheck2">&nbsp;</label>
+										</div>
+									</td>
+									<td class="table-user">
+										<img src="assets/images/users/avatar-3.jpg" alt="table-user" class="me-2 rounded-circle" />
+										Pepe
+									</td>
+									<td>Picker</td>
+									<td>C1</td>
+									<td><i class="mdi mdi-circle text-warning"></i> On holidays</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	        <!-- END Container -->
+			<div id="add-data-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-full-width">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="add-data-modal">Manage Data</h4>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-xl-12">
+									<div class="card">
+										<div class="card-body">
+											<label for="projectname" class="mb-0">Data</label>
+											<p class="text-muted font-14">Upload the data file</p>
+											
+											{% comment %} <form action="/" method="post" class="dropzone" enctype="multipart/form-data" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+												data-upload-preview-template="#uploadPreviewTemplate">
+												{% csrf_token %}
+ 
+        										{{form.as_p}}
+												<div class="fallback">
+													<input name="file" type="file" />
+												</div>
+	
+												<div class="dz-message needsclick">
+													<i class="h3 text-muted dripicons-cloud-upload"></i>
+													<h4>Drop files here or click to upload.</h4>
+												</div>
+											</form>  {% endcomment %}
+											<form method="post" enctype="multipart/form-data">
+												{% csrf_token %}
+												{{ form.as_p }}
+												<button type="submit">Upload</button>
+											</form> 
+	
+											<!-- Preview -->
+											<div class="dropzone-previews mt-3" id="file-previews"></div>
+	
+											<!-- file preview template -->
+											<div class="d-none" id="uploadPreviewTemplate">
+												<div class="card mt-1 mb-0 shadow-none border">
+													<div class="p-2">
+														<div class="row align-items-center">
+															<div class="col-auto">
+																<img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+															</div>
+															<div class="col ps-0">
+																<a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
+																<p class="mb-0" data-dz-size></p>
+															</div>
+															<div class="col-auto">
+																<!-- Button -->
+																<a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+																	<i class="dripicons-cross"></i>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end file preview template -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->  
+	<!-- container -->
+        
+{% endblock %}
+
+{% block styles %}
+	<!-- tables css -->
+	 <link href="{% static 'assets/css/vendor/dataTables.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	 <link href="{% static 'assets/css/vendor/responsive.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	 <link href="{% static 'assets/css/vendor/buttons.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	 <link href="{% static 'assets/css/vendor/select.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	 <link href="{% static 'assets/css/vendor/fixedHeader.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	 <link href="{% static 'assets/css/vendor/fixedColumns.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+	<!-- third party css end -->
+{% endblock %}
+
+{% block scripts %}
+
+
+
+	<!-- bundle -->
+	<script src="{% static 'assets/js/vendor.min.js'%}"></script>
+	<script src="{% static 'assets/js/app.min.js'%}"></script>
+
+	<!-- third party js -->
+	<script src="{% static 'assets/js/vendor/apexcharts.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/jquery-jvectormap-1.2.2.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/jquery-jvectormap-world-mill-en.js'%}"></script>
+	<!-- third party js ends -->
+
+	<!-- demo app -->
+	<script src="{% static 'assets/js/pages/demo.dashboard.js'%}"></script>
+	<!-- end demo js-->
+
+	<!-- tables javascript -->
+	<script src="{% static 'assets/js/pages/demo.datatable-init.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/jquery.dataTables.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/dataTables.bootstrap5.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/dataTables.responsive.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/responsive.bootstrap5.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/dataTables.buttons.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/buttons.bootstrap5.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/buttons.html5.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/buttons.flash.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/buttons.print.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/dataTables.keyTable.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/dataTables.select.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/fixedColumns.bootstrap5.min.js'%}"></script>
+	<script src="{% static 'assets/js/vendor/fixedHeader.bootstrap5.min.js'%}"></script>
+
+	
+	<!-- plugin js -->
+	<script src="{% static 'assets/js/vendor/dropzone.min.js'%}"></script>
+	<!-- init js -->
+	<script src="{% static 'assets/js/ui/component.fileupload.js'%}"></script>
+
+
+{% endblock %}

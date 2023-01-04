@@ -1,0 +1,227 @@
+<html>
+  <head>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .deck-tooltip {
+      font-family: Helvetica, Arial, sans-serif;
+      padding: 6px !important;
+      margin: 8px;
+      max-width: 300px;
+      font-size: 10px;
+    }
+    #control-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 12px;
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1;
+      font-family: Helvetica, Arial, sans-serif;
+      background: #fff;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    }
+    label {
+      display: inline-block;
+      width: 50px;
+    }
+  </style>  
+
+
+    <!-- deck.gl standalone bundle -->
+    <script src="https://unpkg.com/deck.gl@^8.8.0/dist.min.js"></script>
+
+    <!-- Mapbox dependencies -->
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css" rel="stylesheet" />
+
+  </head>
+
+  <body>
+  
+
+
+  
+  </body>
+
+  <script type="text/javascript">
+    const {DeckGL,TextLayer} = deck;
+    const deckgl = new deck.DeckGL({
+      //container: 'map_container',
+      // Set your Mapbox access token here
+      mapboxApiAccessToken: 'pk.eyJ1Ijoic2FsdmEtZ3VlcnJlcm8iLCJhIjoiY2w3bjY3anpsMDc5ZjN2czc3dnU1eHJkMiJ9.ThFWKNid4iz_m16p6bJxmw',
+
+      initialViewState: {
+        longitude:            -3.68522146,
+        latitude:             40.34356215,
+        zoom: 10,
+        bearing: 0,
+        pitch: 30,
+      },
+      controller: true,
+      getTooltip: ({object}) => object && `${object.properties.cluster}\n${object.properties.name}`,
+    });
+
+    
+    var NODES_DATA  = 'http://127.0.0.1:8000/api/data/nodes/' + '{{project_id}}' + '?format=json';
+    var ARCS_DATA   = 'http://127.0.0.1:8000/api/data/arcs/'  + '{{project_id}}' + '?format=json';
+
+    var all_layers = [];
+
+    all_layers[0] = new deck.GeoJsonLayer({
+      id: "nodes1",
+      data: NODES_DATA,
+      // Styles
+      filled: true,
+      pointRadiusMinPixels: 5,
+      pointRadiusScale: 1,
+      getPointRadius: f => 1,//(11 - f.properties.scalerank),
+      getFillColor: f =>  f.properties.color,
+      // Interactive props
+      pickable: true,
+      autoHighlight: true,
+      //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+    });
+
+    fetch(ARCS_DATA)
+    .then(response => response.json())
+    .then(datos =>     
+        all_layers[1] = new deck.ArcLayer({
+          id: "arcs1",
+          data: datos["features"],
+
+          getSourcePosition: f => f.coordinates[0], 
+          getTargetPosition: f => f.coordinates[1],
+          getSourceColor: f => f.properties.colorF, 
+          getTargetColor: f => f.properties.colorT,
+          getWidth: 2
+
+          //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+        })
+    );
+
+    deckgl.setProps({ layers: all_layers });
+
+    async function apicall(nodes_url,arcs_url) {
+
+      let res = await fetch(nodes_url);
+      let json = await res.json();
+      var pages = json["pagination"][1];
+      console.log(pages)
+      var j 
+      for (let i = 2; i <= pages; i++) {
+        var NODES_DATA  = 'http://127.0.0.1:8000/api/map/nodes/'+ String(i) +'/?format=json';
+
+        all_layers[i] = new deck.GeoJsonLayer({
+          id: "nodes"+String(i),
+          data: NODES_DATA,
+          // Styles
+          filled: true,
+          pointRadiusMinPixels: 5,
+          pointRadiusScale: 1,
+          getPointRadius: f => 1,//(11 - f.properties.scalerank),
+          getFillColor: f =>  f.properties.color,
+          // Interactive props
+          pickable: true,
+          autoHighlight: true,
+          //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+            });
+        j = i+1;
+      }
+
+      let res1 = await fetch(arcs_url);
+      let json1 = await res1.json();
+      pages = json1["pagination"][1];
+      console.log(pages)
+      console.log(j)
+      for (let i = 9 ; i <= pages; i++) {
+        var arcs  = 'http://127.0.0.1:8000/api/map/arcs/'+ String(i) +'/?format=json';
+
+        console.log(i) /*
+        fetch(arcs)
+        .then(response => response.json())
+        .then(datos =>     
+            all_layers[i] = new deck.ArcLayer({
+              id: "arcs"+String(i),
+              data: datos["features"],
+              // Styles
+              getSourcePosition: f => f.coordinates[0], 
+              getTargetPosition: f => f.coordinates[1],
+              getSourceColor: [0, 128, 200],
+              getTargetColor: [200, 0, 80],
+              getWidth: 1
+              //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+            })
+        ); */
+      }
+
+
+      deckgl.setProps({ layers: all_layers });
+    }
+    apicall(NODES_DATA,ARCS_DATA)
+    deckgl.setProps({ layers: all_layers });
+    // ARCS
+    /*
+    var response = fetch(ARCS_DATA);
+    var myJson = response.json();
+    var pages = myJson["Pagination"][2];
+
+    for (let i = 2; i <= pages; i++) {
+      var ARCS_DATA  = 'http://127.0.0.1:8000/api/map/arcs/'+ String(i) +'/?format=json';
+      all_layers[j + i-1] = new deck.GeoJsonLayer({
+        id: "arcs"+String(i),
+        data: ARCS_DATA,
+        // Styles
+        filled: true,
+        pointRadiusMinPixels: 2,
+        pointRadiusScale: 20,
+        getPointRadius: f => 1,//(11 - f.properties.scalerank),
+        getFillColor: f =>  f.properties.color,
+        getSourcePosition: f => f.geometry.coordinates[0], 
+        getTargetPosition: f => f.geometry.coordinates[1],
+        // Interactive props
+        pickable: true,
+        autoHighlight: true,
+        //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+      });
+    }
+    */
+
+    
+    /*layers: [
+      new deck.GeoJsonLayer({
+        id: 'nodes',
+        data: NODES,
+        // Styles
+        filled: true,
+        pointRadiusMinPixels: 2,
+        pointRadiusScale: 20,
+        getPointRadius: f => 1,//(11 - f.properties.scalerank),
+        getFillColor: f =>  f.properties.color,
+        // Interactive props
+        pickable: true,
+        autoHighlight: true,
+        //onClick: object => object && alert(`${object.properties.name} (${object.properties.cluster})`)
+      }),
+      new deck.ArcLayer({
+        id: 'arcs',
+        data: NODES,
+        dataTransform: d => d.features.filter(f => f.properties.arc == true),
+        // Styles
+        getSourcePosition: f => f.geometry.coordinates[0], 
+        getTargetPosition: f => f.geometry.coordinates[1],
+        getSourceColor: [0, 128, 200],
+        getTargetColor: [200, 0, 80],
+        getWidth: 1
+      }),
+    ]
+
+  });*/
+  </script>
+</html>

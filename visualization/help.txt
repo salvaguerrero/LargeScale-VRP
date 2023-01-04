@@ -1,0 +1,13 @@
+Activate the venv: .venv\Scripts\Activate
+Run server:      python manage.py runserver
+
+Database changes:
+python manage.py makemigrations
+python manage.py migrate
+
+create super user:
+python manage.py createsuperuser
+salvador  1234
+
+delete database content
+python manage.py flush

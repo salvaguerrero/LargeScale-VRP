@@ -1,0 +1,21 @@
+$(function () { var e = new Gantt("#tasks-gantt", 
+[
+ { id: "1", name: "Tuck 1", start: "2019-07-16T19:20:", end: "2019-07-20" }, 
+ { id: "2", name: "Find out the old contract documents", start: "2019-07-19", end: "2019-07-21",  }, 
+ { id: "3", name: "Organize meeting with sales associates to understand need in detail", start: "2019-07-21", end: "2019-07-22",  }, 
+ { id: "4", name: "iOS App home page", start: "2019-07-15", end: "2019-07-17" }, 
+ { id: "5", name: "Write a release note", start: "2019-07-18", end: "2019-07-22" }, 
+ { id: "6", name: "Setup new sales project", start: "2019-07-20", end: "2019-07-31" }, 
+ { id: "7", name: "Invite user to a project", start: "2019-07-25", end: "2019-07-26" }, 
+ { id: "8", name: "Coordinate with business development", start: "2019-07-28", end: "2019-07-30" }, 
+ { id: "9", name: "Kanban board design", start: "2019-08-01", end: "2019-08-03"}, 
+ { id: "10", name: "Enable analytics tracking", start: "2019-08-05", end: "2019-08-07"}
+], 
+{ 
+view_modes: ["Quarter Day", "Half Day", "Day", "Week", "Month"], 
+bar_height: 20, 
+padding: 18, 
+view_mode: "Quarter Day", 
+custom_popup_html: function (e) { e.end; var s = 60 <= e.progress ? "bg-success" : 30 <= e.progress && e.progress < 60 ? "bg-primary" : "bg-warning"; 
+return '<div class="popover fade show bs-popover-right gantt-task-details" role="tooltip"><div class="arrow"></div><div class="popover-body"><h5>' + e.name + '</h5><p class="mb-2">Expected to finish by ${end_date}</p><div class="progress mb-2" style="height: 10px;"><div class="progress-bar ' + s + '" role="progressbar" style="width: ${task.progress}%;" aria-valuenow="${task.progress}" aria-valuemin="0" aria-valuemax="100">${task.progress}%</div></div></div></div>' 
+} }); $("#modes-filter :input").on("change", function () { e.change_view_mode($(this).val()) }); var s = document.getElementById("modes-filter").querySelectorAll(".btn"); s.forEach(function (e) { e.addEventListener("click", function () { s.forEach(function (e) { e.classList.remove("active") }), e.classList.add("active") }) }) });

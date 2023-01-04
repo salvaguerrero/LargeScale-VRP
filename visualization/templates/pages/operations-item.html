@@ -1,0 +1,698 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Project</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title --> 
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">Project Information</h4>
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <p class="mb-2"><span class="fw-bold me-2">Payment Type:</span> Credit Card</p>
+                            <p class="mb-2"><span class="fw-bold me-2">Provider:</span> Visa ending in 2851</p>
+                            <p class="mb-2"><span class="fw-bold me-2">Valid Date:</span> 02/2020</p>
+                            <p class="mb-0"><span class="fw-bold me-2">CVV:</span> xxx</p>
+                        </li>
+                    </ul>
+                    <div class="page-title-box mt-3">
+                        <button type="button" class="btn btn-info rounded-pill"  data-bs-toggle="modal" id="submitInput"  data-bs-target="#add-data-modal" ><i class="dripicons-rocket"></i> Optimize!<div id="loading"></div></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">                                   
+        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+            <li class="nav-item">
+                <a href="#list" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 active">
+                    <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                    <span class="d-none d-md-block">List view</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#map" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                    <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                    <span class="d-none d-md-block">Map view</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+            <div class="tab-pane show active" id="list">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Route ID</th>
+                                        <th scope="col">Bins</th>
+                                        <th scope="col">Truck</th>
+                                        <th scope="col">Workers</th>
+                                        <th scope="col">Start time</th>
+                                        <th scope="col">End time</th>
+                                        <th scope="col">Total time [min]</th>
+                                        <th scope="col">Total cost [$]</th>
+                                        <th scope="col">Action</th>                                                                       
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {% for key, value in RouteData.items  %}
+                                        <tr>
+                                        <th scope="row">{{key}}</th>
+                                        <td> {{value.routes}} </td>
+                                        <td>T1</td>
+                                        <td>Pepe & Juan </td>
+                                        <td> {{value.start_time}} </td>
+                                        <td> {{value.end_time}} </td>
+                                        <td> {{value.r_time}} </td>
+                                        <td> {{value.fix_wor_cost}} </td>
+                                        <th scope="col">
+                                            <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        </th>
+                                        <tr>                                   
+                                        {% endfor %}                                                     
+                                </tbody>
+                            </table>
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card -->
+                </div>
+            </div>
+            <div class="tab-pane" id="map">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- 21:9 aspect ratio -->
+                                <div class="ratio ratio-21x9">
+                                    <iframe src= "{% url 'map' project_id %}"></iframe>
+                                </div>
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                    </div> <!-- end col-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">          
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="header-title">Costs</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-cached me-1"></i>Refresh</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-circle-edit-outline me-1"></i>Edit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="mdi mdi-delete-outline me-1"></i>Remove</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="border border-light p-3 rounded mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="font-18 mb-1">Number of Vehicles</p>
+                                    <h3 class="text-primary my-0">{{ NumVeh }}</h3>
+                                </div>  
+                                <div class="avatar-sm">
+                                    <span class="avatar-title bg-primary rounded-circle h3 my-0">
+                                        <i class="mdi mdi-dump-truck"></i>
+                                    </span>
+                                </div>                                      
+                            </div>
+                        </div>
+                            
+                        <div class="border border-light p-3 rounded mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="font-18 mb-1">Number of workers</p>
+                                    <h3 class="text-danger my-0">6</h3>
+                                </div>  
+                                <div class="avatar-sm">
+                                    <span class="avatar-title bg-danger rounded-circle h3 my-0">
+                                        <i class="mdi mdi-account-hard-hat"></i>
+                                    </span>
+                                </div>                                      
+                            </div>
+                        </div>
+
+                        <div class="border border-light p-3 rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="font-18 mb-1">Total cost</p>
+                                    <h3 class="text-success my-0">${{ NumVeh }}</h3>
+                                </div>  
+                                <div class="avatar-sm">
+                                    <span class="avatar-title bg-success rounded-circle h3 my-0">
+                                        <i class="mdi mdi-currency-eur"></i>
+                                    </span>
+                                </div>                                      
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="average-sales" class="apex-charts mb-4 mt-3"
+                                    data-colors="#3688fc,#6c757d,#42d29d,#fa6767"></div>
+                            
+
+                                <div class="chart-widget-list">
+                                    <p>
+                                        <i class="mdi mdi-square text-primary"></i> Fix Vehicle Costs
+                                        <span class="float-end">${{ FixCost }}</span>
+                                    </p>
+                                    <p>
+                                        <i class="mdi mdi-square text-dark"></i> Fix Workforce Costs
+                                        <span class="float-end">${{ VarCost }}</span>
+                                    </p>
+                                    <p>
+                                        <i class="mdi mdi-square text-success"></i> Var. Vehicle Costs
+                                        <span class="float-end">$48.96</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <i class="mdi mdi-square text-danger"></i> Var. Workforce Costs
+                                        <span class="float-end">$154.02</span>
+                                    </p>
+                                </div>
+                            </div> <!-- end card-body-->
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div dir="ltr">
+                                    <div id="basic-bar" class="apex-charts" data-colors="#44badc"></div>
+                                </div>
+                            </div>
+                            <!-- end card body-->
+                        </div>
+                        <!-- end card -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Schedule</h4>
+                <div class="row">   
+                    <!-- gantt view -->
+                    <div class="ps-xl-3">
+                        <div class="row">
+                            <div class="col text-sm-end">
+                                <div class="btn-group btn-group-sm mb-2" data-bs-toggle="buttons" id="modes-filter">
+                                    <label class="btn btn-primary d-none d-sm-inline-block">
+                                        <input  class="btn-check" type="radio" name="modes" id="qday" value="Quarter Day"> Quarter Day
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input  class="btn-check" type="radio" name="modes" id="hday" value="Half Day"> Half Day
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input  class="btn-check" type="radio" name="modes" id="day" value="Day"> Day
+                                    </label>
+                                    <label class="btn btn-primary active">
+                                        <input  class="btn-check" type="radio" name="modes" id="week" value="Week" checked> Week
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input  class="btn-check" type="radio" name="modes" id="month" value="Month"> Month
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col mt-3">
+                                <svg id="tasks-gantt"></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end gantt view -->
+                </div>
+            </div>
+        </div>
+    </div>                        
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Assets</h4>
+            </div>
+
+            <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                <li class="nav-item">
+                    <a href="#bins" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                        <span class="d-none d-md-block">Bins</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#trucks" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 active">
+                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                        <span class="d-none d-md-block">Trucks</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#workers" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                        <i class="mdi mdi-settings-outline d-md-none d-block"></i>
+                        <span class="d-none d-md-block">Workers</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane" id="bins">
+
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-info rounded-pill"  data-bs-toggle="modal" data-bs-target="#bins-modal" >Add Bin</button>
+                                <table id="alternative-page-datatable" class="table dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                         
+                                            <th>Bin ID</th>
+                                            <th>Addres</th>
+                                            <th>Type</th>
+                                            <th>Model</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                           
+                                            <td>1938A</td>
+                                            <td>Castellana 200, Madrid</td>
+                                            <td>Organic Waste</td>
+                                            <td>1100 L</td>
+                                            <td><i class="mdi mdi-circle text-success"></i> In Service</td>
+                                        </tr>
+                                        <tr>
+                                         
+                                            <td>1938B</td>
+                                            <td>Castellana 200, Madrid</td>
+                                            <td>Crystals</td>
+                                            <td>1100 L</td>
+                                            <td><i class="mdi mdi-circle text-warning"></i></i> Full</td>
+                                        </tr>
+                                        <tr>
+                                            
+                                            <td>1938C</td>
+                                            <td>Castellana 200, Madrid</td>
+                                            <td>Plastic Waste</td>
+                                            <td>1100 L</td>
+                                            <td><i class="mdi mdi-circle text-info"></i>In Depo</td>
+                                        </tr>
+                                        
+
+                                    </tbody>
+                                </table>
+                            </div> <!-- end card-body -->
+                        </div> <!-- end card -->
+                    </div>
+                </div>
+                <div class="tab-pane show active" id="trucks">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-info rounded-pill"  data-bs-toggle="modal" data-bs-target="#truck-modal" >Add Truck</button>
+                                    <table id="alternative-page-datatable" class="table dt-responsive nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Tuck ID</th>
+                                                <th>Model</th>
+                                                <th>Traffic License</th>
+                                                <th>Age</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+                                    
+                                        <tbody>
+                                            <tr>
+                                                
+                                                <td>T1</td>
+                                                <td>Volvo FE</td>
+                                                <td>123490 ABA</td>
+                                                <td>12</td>
+                                                <td>Euro 6</td>													
+                                            </tr>
+                                            <tr>
+                                                
+                                                <td>T2</td>
+                                                <td>Volvo FE</td>
+                                                <td>123491 ABA</td>
+                                                <td>7</td>
+                                                <td>Euro 3</td>													
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+                </div>
+                <div class="tab-pane" id="workers">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-info rounded-pill" data-bs-toggle="modal" data-bs-target="#worker-modal">Add Worker</button>
+                                    <table class="table table-striped table-centered mb-0">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Name</th>
+                                                <th>Postion</th>
+                                                <th>Driving Skills</th>
+                                                <th>Availability</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                <td class="table-user">
+                                                    <img src="assets/images/users/avatar-2.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                    Juan
+                                                </td>
+                                                <td>Driver</td>
+                                                <td>CE</td>
+                                                <td><i class="mdi mdi-circle text-success"></i> Active</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                          
+                                                <td class="table-user">
+                                                    <img src="assets/images/users/avatar-3.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                    Pepe
+                                                </td>
+                                                <td>Picker</td>
+                                                <td>C1</td>
+                                                <td><i class="mdi mdi-circle text-warning"></i> On holidays</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+                </div>
+            </div>
+            <!-- Full width modal -->
+            <div id="worker-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-full-width">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="worker-modal">Manage Workers</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table class="table table-striped table-centered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 20px;">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                                            </div>
+                                                        </th>
+                                                        <th>Name</th>
+                                                        <th>Postion</th>
+                                                        <th>Driving Skills</th>
+                                                        <th>Availability</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-2.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Juan
+                                                        </td>
+                                                        <td>Driver</td>
+                                                        <td>CE</td>
+                                                        <td><i class="mdi mdi-circle text-success"></i> Active</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-3.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Pepe
+                                                        </td>
+                                                        <td>Picker</td>
+                                                        <td>C1</td>
+                                                        <td><i class="mdi mdi-circle text-warning"></i> On holidays</td>
+                                                    </tr>
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <div id="bins-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-full-width">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="bins-modal">Manage Bins</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table class="table table-striped table-centered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 20px;">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                                            </div>
+                                                        </th>                                                                            <th>Name</th>
+                                                        <th>Postion</th>
+                                                        <th>Driving Skills</th>
+                                                        <th>Availability</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-2.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Juan
+                                                        </td>
+                                                        <td>Driver</td>
+                                                        <td>CE</td>
+                                                        <td><i class="mdi mdi-circle text-success"></i> Active</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-3.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Pepe
+                                                        </td>
+                                                        <td>Picker</td>
+                                                        <td>C1</td>
+                                                        <td><i class="mdi mdi-circle text-warning"></i> On holidays</td>
+                                                    </tr>
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <div id="truck-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-full-width">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="truck-modal">Manage Trucks</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table class="table table-striped table-centered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 20px;">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                                            </div>
+                                                        </th>                                                                            <th>Name</th>
+                                                        <th>Postion</th>
+                                                        <th>Driving Skills</th>
+                                                        <th>Availability</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-2.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Juan
+                                                        </td>
+                                                        <td>Driver</td>
+                                                        <td>CE</td>
+                                                        <td><i class="mdi mdi-circle text-success"></i> Active</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="customCheck2">
+                                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <img src="assets/images/users/avatar-3.jpg" alt="table-user" class="me-2 rounded-circle" />
+                                                            Pepe
+                                                        </td>
+                                                        <td>Picker</td>
+                                                        <td>C1</td>
+                                                        <td><i class="mdi mdi-circle text-warning"></i> On holidays</td>
+                                                    </tr>
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->                                    
+        </div>
+    </div>
+
+    
+    
+
+
+</div>
+{% endblock %}
+{% block scripts %}
+
+    <!-- demo app -->
+    <script src="{% static 'assets/js/pages/demo.dashboard.js'%}"></script>
+    <!-- end demo js-->
+    <!-- gantt js-->
+    <script src="{% static 'assets/js/vendor/frappe-gantt.min.js'%}"></script>
+
+    <!-- demo app -->
+    <script src="{% static 'assets/js/pages/demo.project-gantt.js'%}"></script>
+    <!-- end demo js-->
+
+    <script src="{% static 'assets/js/vendor/apexcharts.min.js'%}"></script>
+    <!-- third party end -->
+
+    <!-- demo:js -->
+    <script src="{% static 'assets/js/pages/demo.apex-bar.js'%}"></script>
+
+    <script src="{% static 'assets/js/pages/demo.datatable-init.js'%}"></script>
+
+    <!-- demo end -->
+    <script src="{% static 'assets/js/ui/component.fileupload.js'%}"></script>
+
+	<script src="{% static 'assets/js/custom.js'%}"></script>
+
+
+{% endblock %}
