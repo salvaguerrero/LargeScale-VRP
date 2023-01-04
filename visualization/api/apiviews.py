@@ -21,7 +21,7 @@ class MapNodes(APIView):
 	def get(self, request, pk):
 
 		company = Project.objects.get(project_id=self.kwargs['pk']).company_id
-		path = "model_data/"+str(company)+"/"+pk+"/nodes_data.geojson"
+		path = "model_data/"+str(company)+"/"+pk+"/nodes_data.json"
 		f = open(path)
 		data = json.load(f)
 		f.close()

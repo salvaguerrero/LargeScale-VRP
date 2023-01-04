@@ -27,6 +27,7 @@ using Gurobi
 include("julia_libs/data_parsing.jl")
 include("julia_libs/data_output.jl")
 include("julia_libs/models.jl")
+
 function data_loader(company, project, file_name)
 
 	base_path = "C:/Users/Usuario/OneDrive - Universidad Pontificia Comillas/Buzzzzz/Transporte/OR/kaggle/boston bus scheduling/solution/BBS/visualization/model_data"
@@ -45,8 +46,9 @@ function data_loader(company, project, file_name)
 end
 
 function optimizer(company, project)
-	# company = "lyma"
-	# project = "demo"
+	# company = "lyma_1"
+	# project = "1234_1"
+
 	println("******************************************")
 	println("....... Welcome to SGG Optimization ......")
 	println("Model running: Boston Public Schools:     ")
@@ -59,20 +61,20 @@ function optimizer(company, project)
 
 	base_path = "C:/Users/Usuario/OneDrive - Universidad Pontificia Comillas/Buzzzzz/Transporte/OR/kaggle/boston bus scheduling/solution/BBS/visualization/model_data"
 	base_path = base_path*"/"*company
-	if isdir(base_path) ==false
+	if isdir(base_path) == false
 		mkpath(base_path)
 	end
 	base_path = base_path*"/"*project
-	if isdir(base_path) ==false
+	if isdir(base_path) == false
 		mkpath(base_path)
 	end
 
-	django = true
+	django = false
 	if django
 		d = load(base_path*"/julia_data.jld")
 		data = d["data"]
 	else
-		data = ReadData(base_path*"/data entry WM.xlsm")
+		data = ReadData(base_path*"/data entry Aceite.xlsm")
 	end
 	
 	reading_time = DateTime(now()) - t1
@@ -140,3 +142,8 @@ function optimizer(company, project)
 	println("Routing Model Executing Time: ", routing_time)
 	println("        Data  Exporting Time: ", export_time)
 end
+
+
+company = "lyma_1"
+project = "1234_1"
+optimizer(company, project)

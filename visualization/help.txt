@@ -1,5 +1,6 @@
 Activate the venv: .venv\Scripts\Activate
-Run server:      python manage.py runserver
+Run server:
+python manage.py runserver
 
 Database changes:
 python manage.py makemigrations

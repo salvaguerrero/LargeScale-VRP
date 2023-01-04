@@ -202,7 +202,7 @@ end
 
 #----------------------------------------------------------------------------------------->
 
-function  BestInsertion(R,C,DistMatrix,node_df)
+function  BestInsertion(R,C,DistMatrix,node_df,data)
 	#Which stop to add to the route and where to inserted
 		T_best = Inf
 		c_best = 1
@@ -326,7 +326,7 @@ function greedy_routing(data)
 			
 			while length(C) != 0
 
-				T_best,c_best,i_best = BestInsertion(Routes[r],C,DistMatrix,node_df)					#Best stop and the best position 
+				T_best,c_best,i_best = BestInsertion(Routes[r],C,DistMatrix,node_df,data)					#Best stop and the best position 
 
 				if (T_best <= Tmax) && (n_sto  <=  data["VehCap"][1][1]  )
 					Routes[r]  = Insert(Routes[r],c_best,i_best)										#Insert in the element c_best in the position i_best of the route R[r]

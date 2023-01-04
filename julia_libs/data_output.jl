@@ -73,92 +73,39 @@ function to_geojson(nodes_df,arcs_df,base_path)
 #Outputs:
 #		geojson file stored in a the path: 
 
-	element_json = 1000
 	map_base = Dict(
-		 			"features" => [],
-				    "pagination" => [1,1])			#page 1 out of 1. Pagination starts at 1
+		 			"features" => []
+					)			#page 1 out of 1. Pagination starts at 1
 	if arcs_df != false
-		arc_num = size(arcs_df)[1]
-		if  arc_num <= element_json				#No need for pagination
-			map_data =  arcs_to_json(arcs_df,map_base)
-			string_map_data = JSON.json(map_data)
-			path = base_path*"/arcs_data_1.json"
-			open(path, "w") do f
-				write(f, string_map_data)
-			end	
-		else
-			pages =  (arc_num/element_json) == (trunc(Int, arc_num/element_json)) ? trunc(Int, arc_num/element_json) : trunc(Int, arc_num/element_json) + 1
-			l = 1
-			u = element_json
-			for p in 1:pages
-				map_base["pagination"] = [p,pages]
-				map_data = arcs_to_json(arcs_df[l:u,:],map_base)
+		map_data =  arcs_to_json(arcs_df,map_base)
+		string_map_data = JSON.json(map_data)
+		path = base_path*"/arcs_data.json"
+		open(path, "w") do f
+			write(f, string_map_data)
+		end	
 
-				l = u + 1
-				if arc_num - u < element_json		#If we are in the last page
-					u = arc_num
-				else
-					u = u + element_json
-				end
-
-				string_map_data = JSON.json(map_data)
-				path = base_path*"/arcs_data_"*string(p)*".json"
-				open(path, "w") do f
-					write(f, string_map_data)
-				end	
-
-			end
-		end
 	else
 		string_map_data = JSON.json(map_base)
-		path = base_path*"/arcs_data_1.json"
+		path = base_path*"/arcs_data.json"
 		open(path, "w") do f
 			write(f, string_map_data)
 		end	
 	end
 
 	map_base = Dict("type" => "FeatureCollection",
-				"features" => [],
-   			  "pagination" => [1,1])			#page 1 out of 1. Pagination starts at 1
+				"features" => []
+				)			#page 1 out of 1. Pagination starts at 1
+
 	if nodes_df != false
-		nod_num  = size(nodes_df)[1]
-		if  nod_num <= element_json				#No need for pagination
-			map_data =  nodes_to_json(nodes_df,map_base)
-			string_map_data = JSON.json(map_data)
-			path = base_path*"/nodes_data_1.geojson"
-			open(path, "w") do f
-				write(f, string_map_data)
-			end	
-		else
-			pages = trunc(Int, nod_num/element_json) + 1
-			pages =  (nod_num/element_json) == (trunc(Int, nod_num/element_json)) ? trunc(Int, nod_num/element_json) : trunc(Int, nod_num/element_json) + 1
- 
-			l = 1
-			u = element_json
-			for p in 1:pages
-				map_base["pagination"] = [p,pages]
-
-				map_data = nodes_to_json( nodes_df[l:u,:],map_base)
-
-				l = u + 1
-				if nod_num - u < element_json		#If we are in the last page
-					u = nod_num
-				else
-					u = u + element_json
-				end
-
-				string_map_data = JSON.json(map_data)
-
-				path = base_path*"/nodes_data_"*string(p)*".geojson"
-				open(path, "w") do f
-					write(f, string_map_data)
-				end	
-
-			end
-		end
+		map_data =  nodes_to_json(nodes_df,map_base)
+		string_map_data = JSON.json(map_data)
+		path = base_path*"/nodes_data.json"
+		open(path, "w") do f
+			write(f, string_map_data)
+		end	
 	else
 		string_map_data = JSON.json(map_base)
-		path = base_path*"/nodes_data_1.geojson"		
+		path = base_path*"/nodes_data.json"		
 		open(path, "w") do f
 			write(f, string_map_data)
 		end	
